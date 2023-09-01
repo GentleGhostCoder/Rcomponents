@@ -78,3 +78,6 @@ venv.bak/
 /inst/lib/
 
 /inst/ext/patch/
+/inst/lib64/
+/inst/bin/
+/..Rcheck/

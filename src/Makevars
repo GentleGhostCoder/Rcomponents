@@ -1,8 +1,9 @@
 CXX_STD = CXX17
 
-# All include directories of renv libarys (e.g. Rcpp) and also Rinternals
-PKG_CXXFLAGS = -I$(R_HOME)/include -I./ -I./inst/include
-PKG_LIBS = -L./inst/lib -llibdeflate
+# All include directories of renv libraries (e.g. Rcpp) and also Rinternals
+PKG_CXXFLAGS = -I$(R_HOME)/include -I../inst/include -I./
+PKG_LIBS = -L../inst/lib64 -ldeflate -lz
+
 
 CC=gcc
 CXX=g++
@@ -13,18 +14,18 @@ all: install-libdeflate
     PKG_CXXFLAGS += `$(R_HOME)/bin/Rscript -e "Rcpp:::CxxFlags()"`
 
 install-libdeflate:
-	@echo "Installing libdeflate..."
-	@mkdir -p ../build
-	@cd ../ext/libdeflate && cmake -B build && cmake --build build
-	@mkdir -p ../inst/include
-	@mkdir -p ../inst/lib
-	@cp ../ext/libdeflate/libdeflate.h ../inst/include/
-	@cp ../ext/libdeflate/build/libdeflate.a ../inst/lib/
-	@cp ../ext/libdeflate/build/libdeflate.so ../inst/lib/
-	@cp ../ext/libdeflate/build/libdeflate.so.0 ../inst/lib/
-	@echo "Installed libdeflate."
+	@if [ ! -f ../inst/lib64/libdeflate.a ] || [ ! -f ../inst/lib64/libdeflate.so.0 ]; then \
+	  echo "Installing libdeflate..."; \
+	  cd ../ext/libdeflate && cmake -B build -DCMAKE_INSTALL_PREFIX=../../inst; \
+	  cd ../ext/libdeflate/build && cmake --build .; \
+	  cd ../ext/libdeflate/build && cmake --install .; \
+	  echo "Installed libdeflate."; \
+	else \
+	  echo "libdeflate is already installed."; \
+	fi
 
 clean:
 	@echo "Cleaning up..."
+	@rm -rf ../ext/libdeflate/build
 	@rm -f **/*.so **/*.o **/RcppExports.cpp
 	@echo "Cleaned up artifacts."
