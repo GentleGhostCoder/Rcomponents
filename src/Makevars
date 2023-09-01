@@ -15,18 +15,16 @@ all: install-libdeflate
 install-libdeflate:
 	@echo "Installing libdeflate..."
 	@mkdir -p ../build
-	@cd ../build && git clone https://github.com/ebiggers/libdeflate.git
-	@cd ../build/libdeflate && cmake -B build && cmake --build build
+	@cd ../ext/libdeflate && cmake -B build && cmake --build build
 	@mkdir -p ../inst/include
 	@mkdir -p ../inst/lib
-	@cp ../build/libdeflate/libdeflate.h ../inst/include/
-	@cp ../build/libdeflate/build/libdeflate.a ../inst/lib/
-	@cp ../build/libdeflate/build/libdeflate.so ../inst/lib/
-	@cp ../build/libdeflate/build/libdeflate.so.0 ../inst/lib/
+	@cp ../ext/libdeflate/libdeflate.h ../inst/include/
+	@cp ../ext/libdeflate/build/libdeflate.a ../inst/lib/
+	@cp ../ext/libdeflate/build/libdeflate.so ../inst/lib/
+	@cp ../ext/libdeflate/build/libdeflate.so.0 ../inst/lib/
 	@echo "Installed libdeflate."
 
 clean:
 	@echo "Cleaning up..."
-	@rm -rf ../build
 	@rm -f **/*.so **/*.o **/RcppExports.cpp
 	@echo "Cleaned up artifacts."

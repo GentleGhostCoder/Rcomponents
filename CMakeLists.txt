@@ -11,7 +11,7 @@ message("R libraries: ${R_LIBRARIES}")
 message("R include dirs: ${R_INCLUDE_DIR} ${Rcpp_INCLUDE_DIR}")
 
 # Add inst/include directory for libdeflate headers
-add_subdirectory(build/libdeflate)
+add_subdirectory(ext/libdeflate)
 
 add_library(Rcomponents SHARED src/compressor.cpp src/Makevars src/compressor.h)
 include_directories(${CMAKE_SOURCE_DIR}/src)

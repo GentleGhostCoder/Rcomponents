@@ -6,7 +6,6 @@ all: clean
 	gcc -v
 
 clean:
-	rm -rf build
 	rm -f **/*.so **/*.o **/RcppExports.cpp
 
 .compile:
