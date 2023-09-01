@@ -1,0 +1,3 @@
+[submodule "inst/ext/patch"]
+	path = inst/ext/patch
+	url = https://github.com/r-rudra/patch.git

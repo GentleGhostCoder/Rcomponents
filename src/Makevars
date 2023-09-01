@@ -1,0 +1,32 @@
+CXX_STD = CXX17
+
+# All include directories of renv libarys (e.g. Rcpp) and also Rinternals
+PKG_CXXFLAGS = -I$(R_HOME)/include -I./ -I./inst/include
+PKG_LIBS = -L./inst/lib -llibdeflate
+
+CC=gcc
+CXX=g++
+
+.PHONY: clean all install-libdeflate
+
+all: install-libdeflate
+    PKG_CXXFLAGS += `$(R_HOME)/bin/Rscript -e "Rcpp:::CxxFlags()"`
+
+install-libdeflate:
+	@echo "Installing libdeflate..."
+	@mkdir -p ../build
+	@cd ../build && git clone https://github.com/ebiggers/libdeflate.git
+	@cd ../build/libdeflate && cmake -B build && cmake --build build
+	@mkdir -p ../inst/include
+	@mkdir -p ../inst/lib
+	@cp ../build/libdeflate/libdeflate.h ../inst/include/
+	@cp ../build/libdeflate/build/libdeflate.a ../inst/lib/
+	@cp ../build/libdeflate/build/libdeflate.so ../inst/lib/
+	@cp ../build/libdeflate/build/libdeflate.so.0 ../inst/lib/
+	@echo "Installed libdeflate."
+
+clean:
+	@echo "Cleaning up..."
+	@rm -rf ../build
+	@rm -f **/*.so **/*.o **/RcppExports.cpp
+	@echo "Cleaned up artifacts."
